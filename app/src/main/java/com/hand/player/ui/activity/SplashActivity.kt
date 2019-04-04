@@ -8,6 +8,6 @@ import com.hand.player.base.BaseActivity
  */
 class SplashActivity :BaseActivity(){
     override fun getLayoutId(): Int {
-        return R.layout.splash_activity
+        return R.layout.activity_splash
     }
 }
