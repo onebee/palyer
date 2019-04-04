@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 /**
@@ -19,20 +20,26 @@ abstract class BaseActivity : AppCompatActivity(),AnkoLogger {
         info { "哈哈" }
     }
 
-    protected fun initData() {
+   open protected fun initData() {
 
 
     }
 
-    protected fun initListener(){}
+   open protected fun initListener(){}
 
 
     abstract fun getLayoutId(): Int
 
 
-    protected fun myToash(msg: String) {
+   open protected fun myToash(msg: String) {
         runOnUiThread {
             toast(msg)
         }
+    }
+
+
+    inline fun <reified T: BaseActivity>startActivityAndFinish() {
+        startActivity<T>()
+        finish()
     }
 }

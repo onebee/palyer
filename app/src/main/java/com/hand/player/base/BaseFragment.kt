@@ -33,24 +33,24 @@ abstract class BaseFragment : Fragment(),AnkoLogger {
         initData()
     }
 
-    protected fun initData() {
+   open protected fun initData() {
 
 
     }
 
-    protected fun initListener() {
+   open protected fun initListener() {
 
 
     }
 
     abstract fun initView(): View?
 
-    protected fun init() {
+   open protected fun init() {
 
 
     }
 
-    protected fun myToash(msg: String) {
+  open  protected fun myToash(msg: String) {
         runOnUiThread {
             toast(msg)
         }
