@@ -30,7 +30,7 @@ class SplashActivity : BaseActivity(), ViewPropertyAnimatorListener {
 
     override fun initData() {
         super.initData()
-        ViewCompat.animate(imageView).scaleX(1.0f).scaleY(1.0f).setListener(this).setDuration(2000).start()
+        ViewCompat.animate(imageView).scaleX(1.0f).scaleY(1.0f).setListener(this).setDuration(1000).start()
 
     }
 }
