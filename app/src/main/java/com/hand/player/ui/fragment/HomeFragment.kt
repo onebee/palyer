@@ -1,5 +1,6 @@
 package com.hand.player.ui.fragment
 
+import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.google.gson.Gson
@@ -34,6 +35,11 @@ class HomeFragment : BaseFragment() {
         home_rv.adapter = adapter
 
 
+        sw_layout.setColorSchemeColors(Color.RED,Color.YELLOW,Color.BLUE)
+        sw_layout.setOnRefreshListener {
+            loadData()
+        }
+
     }
 
     override fun initData() {
@@ -51,17 +57,27 @@ class HomeFragment : BaseFragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
 //                info { " 当前线程 : " + Thread.currentThread().name }
+                myToash("刷新数据失败 ! " + e.printStackTrace())
 
+                ThreadUtil.runOnMainThread(object : Runnable {
+                    override fun run() {
+                        sw_layout.isRefreshing = false
+                    }
+
+                })
             }
 
             override fun onResponse(call: Call, response: Response) {
 //                info { " 当前线程 : " + Thread.currentThread().name }
+
+                myToash("刷新数据成功 ! ")
                 val result = response.body()?.string()
                 val gson = Gson()
                 val list = gson.fromJson<List<HomeItemBean>>(result, object : TypeToken<List<HomeItemBean>>() {}.type)
                 ThreadUtil.runOnMainThread(object : Runnable {
                     override fun run() {
                         adapter.update(list)
+                        sw_layout.isRefreshing = false
                     }
 
                 })
