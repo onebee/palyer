@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.hand.player.widget.HomeItemView
+import com.hand.player.widget.LoadMoreView
 import com.itheima.player.model.bean.HomeItemBean
 
 /**
@@ -21,28 +22,49 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeHolder>() {
         notifyDataSetChanged()
     }
 
+    fun loadMore(list: List<HomeItemBean>) {
+
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == list.size) {
+            1
+
+        } else {
+            0
+        }
+
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeHolder {
+        return if (viewType == 1) {
+            HomeHolder(LoadMoreView(parent?.context))
+        } else {
+
+            HomeHolder(HomeItemView(parent?.context))
+        }
 
 
-        return HomeHolder(HomeItemView(parent?.context))
     }
 
     override fun getItemCount(): Int {
 
-        return list.size
+        return list.size + 1
     }
 
     override fun onBindViewHolder(holder: HomeHolder, position: Int) {
-        val data = list.get(position)
+        if (position == list.size) {
+            return
+        }
+        val data = list[position]
         val itemView = holder.itemView as HomeItemView
-
         itemView.setData(data)
 
     }
 
 
-    class HomeHolder(item: View) : RecyclerView.ViewHolder(item) {
-
-    }
+    class HomeHolder(item: View) : RecyclerView.ViewHolder(item)
 }
