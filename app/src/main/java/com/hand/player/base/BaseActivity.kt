@@ -3,7 +3,6 @@ package com.hand.player.base
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -17,7 +16,6 @@ abstract class BaseActivity : AppCompatActivity(),AnkoLogger {
         setContentView(getLayoutId())
         initListener()
         initData()
-        info { "哈哈" }
     }
 
    open protected fun initData() {

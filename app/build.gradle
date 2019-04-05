@@ -47,4 +47,7 @@ dependencies {
     //jiecaovideoplayer
     implementation 'fm.jiecao:jiecaovideoplayer:5.8.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 }
