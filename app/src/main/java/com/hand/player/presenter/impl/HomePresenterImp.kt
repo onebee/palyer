@@ -19,6 +19,7 @@ import java.io.IOException
 class HomePresenterImp(var homeView: HomeView) : HomePresenter {
     override fun loadData() {
         val path = URLProviderUtils.getHomeUrl(0, 20)
+//        val client = OkHttpClient.Builder().addInterceptor(StethoInterceptor()).build()//addInterceptor(StethoInterceptor()).build()
         val client = OkHttpClient.Builder().build()//addInterceptor(StethoInterceptor()).build()
         val request = Request.Builder().url(path).get().build()
         client.newCall(request).enqueue(object : Callback {
@@ -45,29 +46,7 @@ class HomePresenterImp(var homeView: HomeView) : HomePresenter {
     }
 
     override fun loadMoreData(offset: Int) {
-        val path = URLProviderUtils.getHomeUrl(offset, 20)
-        val client = OkHttpClient.Builder().build()//addInterceptor(StethoInterceptor()).build()
-        val request = Request.Builder().url(path).get().build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        homeView.onError(e?.message)
-                    }
-                })
-            }
 
-            override fun onResponse(call: Call, response: Response) {
-                val result = response.body()?.string()
-                val gson = Gson()
-                val list = gson.fromJson<List<HomeItemBean>>(result, object : TypeToken<List<HomeItemBean>>() {}.type)
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        homeView.loadMore(list)
-                    }
-                })
-            }
-        })
     }
 
 }
