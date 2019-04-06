@@ -3,6 +3,7 @@ package com.hand.player.ui.fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.hand.player.R
+import com.hand.player.adapter.YunDanAdapter
 import com.hand.player.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -18,5 +19,8 @@ class YunDanFragment : BaseFragment() {
 
     override fun initListener() {
         recycleView.layoutManager = LinearLayoutManager(context)
+        val adapter = YunDanAdapter()
+        recycleView.adapter= adapter
+        adapter.notifyDataSetChanged()
     }
 }
