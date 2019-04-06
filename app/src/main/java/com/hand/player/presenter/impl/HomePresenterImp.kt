@@ -14,20 +14,20 @@ import com.itheima.player.model.bean.HomeItemBean
  * 不加var 只能在init 方法里使用
  * 加了以后可以在其他方法里使用
  */
-class HomePresenterImp(var homeView: HomeView) : HomePresenter, ResponseHandler<List<HomeItemBean>> {
+class HomePresenterImp(var homeView: HomeView?) : HomePresenter, ResponseHandler<List<HomeItemBean>> {
     override fun onError(type: Int, msg: String?) {
-        homeView.onError(msg)
+        homeView?.onError(msg)
 
     }
 
     override fun onSuccess(type: Int, result: List<HomeItemBean>) {
         when (type) {
             TYPE_LOAD_MORE -> {
-                homeView.loadMore(result)
+                homeView?.loadMore(result)
 
             }
             TYPE_INIT_OR_REFRESH -> {
-                homeView.loadSuccess(result)
+                homeView?.loadSuccess(result)
             }
         }
 
@@ -43,6 +43,18 @@ class HomePresenterImp(var homeView: HomeView) : HomePresenter, ResponseHandler<
 
         val request = HomeRequest(TYPE_LOAD_MORE, offset, this).execute()
 //        NetManager.manager.sendRequest(request)
+    }
+
+
+    /**
+     *
+     * 解绑view
+     */
+    fun destoryView() {
+
+        if (homeView != null) {
+            homeView = null
+        }
     }
 
 }
