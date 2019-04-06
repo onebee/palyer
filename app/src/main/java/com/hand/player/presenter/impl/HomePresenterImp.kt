@@ -1,14 +1,11 @@
 package com.hand.player.presenter.impl
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.hand.player.net.HomeRequest
+import com.hand.player.net.NetManager
+import com.hand.player.net.ResponseHandler
 import com.hand.player.presenter.interf.HomePresenter
-import com.hand.player.util.ThreadUtil
-import com.hand.player.util.URLProviderUtils
 import com.hand.player.widget.HomeView
 import com.itheima.player.model.bean.HomeItemBean
-import okhttp3.*
-import java.io.IOException
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/5.
@@ -18,35 +15,33 @@ import java.io.IOException
  */
 class HomePresenterImp(var homeView: HomeView) : HomePresenter {
     override fun loadData() {
-        val path = URLProviderUtils.getHomeUrl(0, 20)
-//        val client = OkHttpClient.Builder().addInterceptor(StethoInterceptor()).build()//addInterceptor(StethoInterceptor()).build()
-        val client = OkHttpClient.Builder().build()//addInterceptor(StethoInterceptor()).build()
-        val request = Request.Builder().url(path).get().build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        // 回到view 层处理
-                        homeView.onError(e?.message)
-                    }
-                })
+        val request = HomeRequest(0, object : ResponseHandler<List<HomeItemBean>> {
+            override fun onError(msg: String?) {
+                homeView.onError(msg)
+
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                val result = response.body()?.string()
-                val gson = Gson()
-                val list = gson.fromJson<List<HomeItemBean>>(result, object : TypeToken<List<HomeItemBean>>() {}.type)
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        homeView.loadSuccess(list)
-                    }
-                })
+            override fun onSuccess(result: List<HomeItemBean>) {
+                homeView.loadSuccess(result)
             }
+
         })
+        NetManager.manager.sendRequest(request)
     }
 
     override fun loadMoreData(offset: Int) {
 
+        val request = HomeRequest(offset, object : ResponseHandler<List<HomeItemBean>> {
+            override fun onError(msg: String?) {
+                homeView.onError(msg)
+            }
+
+            override fun onSuccess(result: List<HomeItemBean>) {
+                homeView.loadMore(result)
+            }
+
+        })
+        NetManager.manager.sendRequest(request)
     }
 
 }
