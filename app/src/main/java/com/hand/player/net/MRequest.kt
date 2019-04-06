@@ -6,7 +6,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * @author  diaokaibin@gmail.com on 2019/4/6.
  */
-open class MRequest<RESPONSE>(val url: String, val handler: ResponseHandler<RESPONSE>) {
+open class MRequest<RESPONSE>( val type:Int,val url: String, val handler: ResponseHandler<RESPONSE>) {
     /***
      * 解析网络请求的结果
      */

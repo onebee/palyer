@@ -12,34 +12,37 @@ import com.itheima.player.model.bean.HomeItemBean
  * 不加var 只能在init 方法里使用
  * 加了以后可以在其他方法里使用
  */
-class HomePresenterImp(var homeView: HomeView) : HomePresenter {
-    override fun loadData() {
-        val request = HomeRequest(0, object : ResponseHandler<List<HomeItemBean>> {
-            override fun onError(msg: String?) {
-                homeView.onError(msg)
+class HomePresenterImp(var homeView: HomeView) : HomePresenter, ResponseHandler<List<HomeItemBean>> {
+    override fun onError(type: Int, msg: String?) {
+        homeView.onError(msg)
+
+    }
+
+    override fun onSuccess(type: Int, result: List<HomeItemBean>) {
+        when (type) {
+            TYPE_LOAD_MORE -> {
+                homeView.loadMore(result)
 
             }
-
-            override fun onSuccess(result: List<HomeItemBean>) {
+            TYPE_INIT_OR_REFRESH -> {
                 homeView.loadSuccess(result)
             }
+        }
 
-        }).execute()
+    }
+
+    val TYPE_INIT_OR_REFRESH = 1
+    val TYPE_LOAD_MORE = 2
+
+
+    override fun loadData() {
+        val request = HomeRequest(TYPE_INIT_OR_REFRESH, 0, this).execute()
 //        NetManager.manager.sendRequest(request)
     }
 
     override fun loadMoreData(offset: Int) {
 
-        val request = HomeRequest(offset, object : ResponseHandler<List<HomeItemBean>> {
-            override fun onError(msg: String?) {
-                homeView.onError(msg)
-            }
-
-            override fun onSuccess(result: List<HomeItemBean>) {
-                homeView.loadMore(result)
-            }
-
-        }).execute()
+        val request = HomeRequest(TYPE_LOAD_MORE, offset, this).execute()
 //        NetManager.manager.sendRequest(request)
     }
 
