@@ -4,27 +4,39 @@ import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.hand.player.R
 import com.hand.player.adapter.HomeAdapter
 import com.hand.player.base.BaseFragment
-import com.hand.player.util.ThreadUtil
-import com.hand.player.util.URLProviderUtils
+import com.hand.player.presenter.impl.HomePresenterImp
+import com.hand.player.widget.HomeView
 import com.itheima.player.model.bean.HomeItemBean
 import kotlinx.android.synthetic.main.fragment_home.*
-import okhttp3.*
-import org.jetbrains.anko.info
-import java.io.IOException
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/5.
  */
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), HomeView {
+    override fun onError(message: String?) {
+        myToash("加载数据失败$message")
+    }
+
+    override fun loadSuccess(list: List<HomeItemBean>?) {
+        myToash("加载数据成功")
+        sw_layout.isRefreshing = false
+
+        adapter.update(list)
+    }
+
+    override fun loadMore(list: List<HomeItemBean>?) {
+        myToash("加载更多成功")
+        adapter.loadMore(list)
+    }
 
     val adapter by lazy {
         HomeAdapter()
     }
+
+    val presenter by lazy { HomePresenterImp(this) }
 
     override fun initView(): View? {
         return View.inflate(context, R.layout.fragment_home, null)
@@ -38,7 +50,8 @@ class HomeFragment : BaseFragment() {
 
         sw_layout.setColorSchemeColors(Color.RED, Color.YELLOW, Color.BLUE)
         sw_layout.setOnRefreshListener {
-            loadData()
+//            loadData()
+            presenter.loadData()
         }
 
         home_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -63,7 +76,8 @@ class HomeFragment : BaseFragment() {
                         val lastVisibleItemPosition = manager.findLastVisibleItemPosition()
                         if (lastVisibleItemPosition == adapter.itemCount - 1) {
 
-                            loadMoreData(adapter.itemCount - 1)
+//                            loadMoreData(adapter.itemCount - 1)
+                            presenter.loadMoreData(adapter.itemCount - 1)
                         }
                     }
                 }
@@ -81,90 +95,8 @@ class HomeFragment : BaseFragment() {
 
     override fun initData() {
 
-        loadData()
-
-    }
-
-    private fun loadData() {
-        val path = URLProviderUtils.getHomeUrl(0, 20)
-
-        val client = OkHttpClient.Builder().build()//addInterceptor(StethoInterceptor()).build()
-        val request = Request.Builder().url(path).get().build()
-        info { path }
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-//                info { " 当前线程 : " + Thread.currentThread().name }
-                myToash("刷新数据失败 ! " + e.printStackTrace())
-
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        sw_layout.isRefreshing = false
-                    }
-
-                })
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-//                info { " 当前线程 : " + Thread.currentThread().name }
-
-                myToash("刷新数据成功 ! ")
-                val result = response.body()?.string()
-                val gson = Gson()
-                val list = gson.fromJson<List<HomeItemBean>>(result, object : TypeToken<List<HomeItemBean>>() {}.type)
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        adapter.update(list)
-                        sw_layout.isRefreshing = false
-                    }
-
-                })
-
-            }
-
-
-        })
-
-
-    }
-
-    private fun loadMoreData(offset: Int) {
-        val path = URLProviderUtils.getHomeUrl(offset, 20)
-
-        val client = OkHttpClient.Builder().build()//addInterceptor(StethoInterceptor()).build()
-        val request = Request.Builder().url(path).get().build()
-        info { path }
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-//                info { " 当前线程 : " + Thread.currentThread().name }
-                myToash("刷新数据失败 ! " + e.printStackTrace())
-
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        sw_layout.isRefreshing = false
-                    }
-
-                })
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-//                info { " 当前线程 : " + Thread.currentThread().name }
-
-                myToash("刷新数据成功 ! ")
-                val result = response.body()?.string()
-                val gson = Gson()
-                val list = gson.fromJson<List<HomeItemBean>>(result, object : TypeToken<List<HomeItemBean>>() {}.type)
-                ThreadUtil.runOnMainThread(object : Runnable {
-                    override fun run() {
-                        adapter.loadMore(list)
-                        sw_layout.isRefreshing = false
-                    }
-
-                })
-
-            }
-
-
-        })
+//        loadData()
+        presenter.loadData()
 
 
     }

@@ -16,16 +16,25 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeHolder>() {
     private val list = ArrayList<HomeItemBean>()
 
 
-    fun update(list: List<HomeItemBean>) {
-        this.list.clear()
-        this.list.addAll(list)
-        notifyDataSetChanged()
+    fun update(list: List<HomeItemBean>?) {
+//        if (list==null)return
+
+        list?.let {
+            this.list.clear()
+            this.list.addAll(list)
+            notifyDataSetChanged()
+        }
+
     }
 
-    fun loadMore(list: List<HomeItemBean>) {
+    fun loadMore(list: List<HomeItemBean>?) {
 
-        this.list.addAll(list)
-        notifyDataSetChanged()
+        list?.let {
+            this.list.addAll(list)
+            notifyDataSetChanged()
+        }
+
+
     }
 
     override fun getItemViewType(position: Int): Int {
