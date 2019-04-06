@@ -18,4 +18,12 @@ open class MRequest<RESPONSE>(val url: String, val handler: ResponseHandler<RESP
         return json.fromJson(result, type)
     }
 
+
+    /**
+     * 发送网络请求
+     */
+    fun execute() {
+        NetManager.manager.sendRequest(this)
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.hand.player.presenter.impl
 
 import com.hand.player.net.HomeRequest
-import com.hand.player.net.NetManager
 import com.hand.player.net.ResponseHandler
 import com.hand.player.presenter.interf.HomePresenter
 import com.hand.player.widget.HomeView
@@ -25,8 +24,8 @@ class HomePresenterImp(var homeView: HomeView) : HomePresenter {
                 homeView.loadSuccess(result)
             }
 
-        })
-        NetManager.manager.sendRequest(request)
+        }).execute()
+//        NetManager.manager.sendRequest(request)
     }
 
     override fun loadMoreData(offset: Int) {
@@ -40,8 +39,8 @@ class HomePresenterImp(var homeView: HomeView) : HomePresenter {
                 homeView.loadMore(result)
             }
 
-        })
-        NetManager.manager.sendRequest(request)
+        }).execute()
+//        NetManager.manager.sendRequest(request)
     }
 
 }
