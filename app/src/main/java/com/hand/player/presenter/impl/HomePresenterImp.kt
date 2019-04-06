@@ -3,6 +3,8 @@ package com.hand.player.presenter.impl
 import com.hand.player.net.HomeRequest
 import com.hand.player.net.ResponseHandler
 import com.hand.player.presenter.interf.HomePresenter
+import com.hand.player.presenter.interf.HomePresenter.Companion.TYPE_INIT_OR_REFRESH
+import com.hand.player.presenter.interf.HomePresenter.Companion.TYPE_LOAD_MORE
 import com.hand.player.widget.HomeView
 import com.itheima.player.model.bean.HomeItemBean
 
@@ -30,9 +32,6 @@ class HomePresenterImp(var homeView: HomeView) : HomePresenter, ResponseHandler<
         }
 
     }
-
-    val TYPE_INIT_OR_REFRESH = 1
-    val TYPE_LOAD_MORE = 2
 
 
     override fun loadData() {
