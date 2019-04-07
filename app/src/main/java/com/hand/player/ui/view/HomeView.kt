@@ -1,4 +1,4 @@
-package com.hand.player.widget
+package com.hand.player.ui.view
 
 import com.hand.player.base.BaseView
 import com.itheima.player.model.bean.HomeItemBean

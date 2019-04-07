@@ -26,5 +26,10 @@ class HomeFragment :BaseListFragment<List<HomeItemBean>,HomeItemBean,HomeItemVie
         return  response
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.destroyView()
+    }
+
 
 }

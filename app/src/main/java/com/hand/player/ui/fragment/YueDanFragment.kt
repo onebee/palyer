@@ -24,4 +24,9 @@ class YueDanFragment : BaseListFragment<YueDanBean,YueDanBean.PlayListsBean,YueD
         return YueDanPresenterImpl(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.destroyView()
+    }
+
 }
