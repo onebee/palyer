@@ -3,6 +3,7 @@ package com.hand.player.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.hand.player.widget.LoadMoreView
 import com.hand.player.widget.YunDanItemView
 import com.itheima.player.model.bean.YueDanBean
 
@@ -25,31 +26,46 @@ class YunDanAdapter : RecyclerView.Adapter<YunDanAdapter.YueDanHolder>() {
 
     }
 
+    fun loadMore(list: List<YueDanBean.PlayListsBean>?) {
+
+        list?.let {
+
+            this.list.addAll(list)
+            notifyDataSetChanged()
+        }
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YueDanHolder {
-        return YueDanHolder(YunDanItemView(parent.context))
+        return if (viewType == 0) {
+            YueDanHolder(YunDanItemView(parent.context))
+        } else {
+            YueDanHolder(LoadMoreView(parent.context))
+        }
     }
 
     override fun getItemCount(): Int {
 
-        return list.size
+        return list.size + 1
     }
 
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+        return if (position == list.size) {
+            1
+        } else {
+            0
+        }
 
     }
 
     override fun onBindViewHolder(holder: YueDanHolder, position: Int) {
+        if(position==list.size)return
 
-        val data = list.get(position)
-        val itemview = holder.itemView as YunDanItemView
-        itemview.setData(data)
-
-
+        val data = list[position]
+        val itemView = holder.itemView as YunDanItemView
+        itemView.setData(data)
     }
 
 
-    class YueDanHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
-
-    }
+    class YueDanHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

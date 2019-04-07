@@ -35,5 +35,6 @@ class YueDanPresenterImpl(var yuedanView: YueDanView) : YueDanPresenter, Respons
     }
 
     override fun loadMoreData(offset: Int) {
+        YueDanRequest(YueDanPresenter.TYPE_LOAD_MORE,offset,this).execute()
     }
 }
