@@ -23,7 +23,7 @@ class MvFragment : BaseFragment(), MvView {
 
     override fun onSuccess(result: List<MvAreaBean>) {
         myToash("加载区域数据成功")
-        val adapter = MvPageAdapter(result,childFragmentManager)
+        val adapter = MvPageAdapter(context,result,childFragmentManager)
 
         viewPager.adapter = adapter
 
