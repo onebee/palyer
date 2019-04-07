@@ -1,10 +1,10 @@
 package com.hand.player.presenter.impl
 
+import com.hand.player.model.MvAreaBean
 import com.hand.player.net.MvAreaRequest
 import com.hand.player.net.ResponseHandler
 import com.hand.player.presenter.interf.MvPresenter
 import com.hand.player.ui.view.MvView
-import com.itheima.player.model.bean.MvAreaBean
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.

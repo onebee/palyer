@@ -1,34 +1,38 @@
 package com.hand.player.ui.fragment
 
-import android.view.Gravity
-import android.view.View
-import android.widget.TextView
-import com.hand.player.base.BaseFragment
+import com.hand.player.adapter.MyListAdapter
+import com.hand.player.base.BaseListAdapter
+import com.hand.player.base.BaseListFragment
+import com.hand.player.base.BaseListPresenter
+import com.hand.player.model.MvPagerBean
+import com.hand.player.model.VideosBean
+import com.hand.player.presenter.impl.MvListPresenterImpl
+import com.hand.player.ui.view.MvListView
+import com.hand.player.widget.MvItemView
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.
  */
-class MvPagerFragment : BaseFragment() {
+class MvPagerFragment : BaseListFragment<MvPagerBean, VideosBean, MvItemView>(), MvListView {
 
-
-    var name:String? = null
-
-    override fun initView(): View? {
-        val tv = TextView(context)
-        tv.gravity = Gravity.CENTER
-        tv.text = javaClass.simpleName + name
-        return tv
-    }
+    var code:String? = null
 
     override fun init() {
 
-         name = arguments?.getString("args")
-
-
+        code = arguments?.getString("args")
     }
 
-    override fun initData() {
+    override fun getSpecialAdapter(): BaseListAdapter<VideosBean, MvItemView> {
 
+        return MyListAdapter()
+    }
 
+    override fun getSpecialPresenter(): BaseListPresenter {
+
+        return MvListPresenterImpl(code!!,this)
+    }
+
+    override fun getList(response: MvPagerBean?): List<VideosBean>? {
+        return response?.videos
     }
 }

@@ -1,4 +1,4 @@
-package com.itheima.player.model.bean
+package com.hand.player.model
 
 
 /**

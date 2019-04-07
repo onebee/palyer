@@ -4,9 +4,9 @@ import android.view.View
 import com.hand.player.R
 import com.hand.player.adapter.MvPageAdapter
 import com.hand.player.base.BaseFragment
+import com.hand.player.model.MvAreaBean
 import com.hand.player.presenter.impl.MvPresenterImpl
 import com.hand.player.ui.view.MvView
-import com.itheima.player.model.bean.MvAreaBean
 import kotlinx.android.synthetic.main.fragment_mv.*
 
 /**
@@ -26,6 +26,8 @@ class MvFragment : BaseFragment(), MvView {
         val adapter = MvPageAdapter(context,result,childFragmentManager)
 
         viewPager.adapter = adapter
+
+        tabLayout.setupWithViewPager(viewPager)
 
 
     }

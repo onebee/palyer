@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.hand.player.model.MvAreaBean
 import com.hand.player.ui.fragment.MvPagerFragment
-import com.itheima.player.model.bean.MvAreaBean
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.
@@ -24,12 +24,16 @@ class MvPageAdapter(val context: Context?, var list: List<MvAreaBean>, fm: Fragm
 
         // 第二种数据传递方式
         val bundle = Bundle()
-        bundle.putString("args", list?.get(position).name)
+        bundle.putString("args", list?.get(position).code)
         val fragment = Fragment.instantiate(context, MvPagerFragment::class.java.name, bundle)
 
 
         return fragment
 
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return list[position].name
     }
 
     override fun getCount(): Int {

@@ -1,6 +1,6 @@
 package com.hand.player.ui.view
 
-import com.itheima.player.model.bean.MvAreaBean
+import com.hand.player.model.MvAreaBean
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.
