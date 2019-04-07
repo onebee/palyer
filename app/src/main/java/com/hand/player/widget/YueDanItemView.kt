@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_yuedan.view.*
 /**
  * @author  diaokaibin@gmail.com on 2019/4/6.
  */
-class YunDanItemView : RelativeLayout {
+class YueDanItemView : RelativeLayout {
 
 
     constructor(context: Context?) : super(context)

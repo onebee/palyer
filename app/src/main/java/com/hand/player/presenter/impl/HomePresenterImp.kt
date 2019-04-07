@@ -1,11 +1,11 @@
 package com.hand.player.presenter.impl
 
+import com.hand.player.base.BaseListPresenter.Companion.TYPE_INIT_OR_REFRESH
+import com.hand.player.base.BaseListPresenter.Companion.TYPE_LOAD_MORE
+import com.hand.player.base.BaseView
 import com.hand.player.net.HomeRequest
 import com.hand.player.net.ResponseHandler
 import com.hand.player.presenter.interf.HomePresenter
-import com.hand.player.presenter.interf.HomePresenter.Companion.TYPE_INIT_OR_REFRESH
-import com.hand.player.presenter.interf.HomePresenter.Companion.TYPE_LOAD_MORE
-import com.hand.player.widget.HomeView
 import com.itheima.player.model.bean.HomeItemBean
 
 /**
@@ -14,7 +14,7 @@ import com.itheima.player.model.bean.HomeItemBean
  * 不加var 只能在init 方法里使用
  * 加了以后可以在其他方法里使用
  */
-class HomePresenterImp(var homeView: HomeView?) : HomePresenter, ResponseHandler<List<HomeItemBean>> {
+class HomePresenterImp(var homeView: BaseView<List<HomeItemBean>>?) : HomePresenter, ResponseHandler<List<HomeItemBean>> {
     override fun onError(type: Int, msg: String?) {
         homeView?.onError(msg)
 
@@ -50,7 +50,7 @@ class HomePresenterImp(var homeView: HomeView?) : HomePresenter, ResponseHandler
      *
      * 解绑view
      */
-    fun destoryView() {
+    override fun destroyView() {
 
         if (homeView != null) {
             homeView = null

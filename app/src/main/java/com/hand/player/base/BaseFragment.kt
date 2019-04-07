@@ -55,4 +55,6 @@ abstract class BaseFragment : Fragment(),AnkoLogger {
             toast(msg)
         }
     }
+
+
 }

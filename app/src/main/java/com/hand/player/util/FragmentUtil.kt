@@ -5,7 +5,7 @@ import com.hand.player.base.BaseFragment
 import com.hand.player.ui.fragment.HomeFragment
 import com.hand.player.ui.fragment.MvFragment
 import com.hand.player.ui.fragment.VBangFragment
-import com.hand.player.ui.fragment.YunDanFragment
+import com.hand.player.ui.fragment.YueDanFragment
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/5.
@@ -15,7 +15,7 @@ class FragmentUtil private  constructor(){
     val homeFragment by lazy { HomeFragment() }
     val myFragment by lazy { MvFragment() }
     val vbangFragment by lazy {VBangFragment()  }
-    val yundanFragment by lazy { YunDanFragment() }
+    val yundanFragment by lazy { YueDanFragment() }
 
     companion object {
         val  fragmentUtil by lazy { FragmentUtil()}
