@@ -8,7 +8,7 @@ import com.hand.player.widget.MvItemView
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.
  */
-class MyListAdapter: BaseListAdapter<VideosBean, MvItemView>() {
+class MvListAdapter: BaseListAdapter<VideosBean, MvItemView>() {
     override fun refreshView(itemView: MvItemView, data: VideosBean) {
 
         itemView.setData(data)

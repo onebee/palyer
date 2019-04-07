@@ -1,6 +1,6 @@
 package com.hand.player.ui.fragment
 
-import com.hand.player.adapter.MyListAdapter
+import com.hand.player.adapter.MvListAdapter
 import com.hand.player.base.BaseListAdapter
 import com.hand.player.base.BaseListFragment
 import com.hand.player.base.BaseListPresenter
@@ -24,7 +24,7 @@ class MvPagerFragment : BaseListFragment<MvPagerBean, VideosBean, MvItemView>(),
 
     override fun getSpecialAdapter(): BaseListAdapter<VideosBean, MvItemView> {
 
-        return MyListAdapter()
+        return MvListAdapter()
     }
 
     override fun getSpecialPresenter(): BaseListPresenter {
@@ -34,5 +34,13 @@ class MvPagerFragment : BaseListFragment<MvPagerBean, VideosBean, MvItemView>(),
 
     override fun getList(response: MvPagerBean?): List<VideosBean>? {
         return response?.videos
+    }
+
+    override fun initListener() {
+        super.initListener()
+        // 设置条目点击事件监听
+        adapter.setMyLisenter {
+            myToash(it.toString())
+        }
     }
 }
