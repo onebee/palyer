@@ -5,10 +5,13 @@ import com.hand.player.base.BaseListAdapter
 import com.hand.player.base.BaseListFragment
 import com.hand.player.base.BaseListPresenter
 import com.hand.player.model.MvPagerBean
+import com.hand.player.model.VideoPlayBean
 import com.hand.player.model.VideosBean
 import com.hand.player.presenter.impl.MvListPresenterImpl
+import com.hand.player.ui.activity.VideoPlayerActivity
 import com.hand.player.ui.view.MvListView
 import com.hand.player.widget.MvItemView
+import org.jetbrains.anko.support.v4.startActivity
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.
@@ -40,7 +43,9 @@ class MvPagerFragment : BaseListFragment<MvPagerBean, VideosBean, MvItemView>(),
         super.initListener()
         // 设置条目点击事件监听
         adapter.setMyLisenter {
-            myToash(it.toString())
+//            myToash(it.toString())
+            val videoPlayBean = VideoPlayBean(it.id,it.title,it.url)
+            startActivity<VideoPlayerActivity>("item" to videoPlayBean)
         }
     }
 }
