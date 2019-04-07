@@ -24,7 +24,7 @@ class NetManager private constructor() {
             override fun onFailure(call: Call, e: IOException) {
                 ThreadUtil.runOnMainThread(Runnable {
                     //homeView.onError(e?.message)
-                    req.handler.onError(req.type,e?.message)
+                    req.handler.onError(req.type, e.message)
                 })
             }
 
