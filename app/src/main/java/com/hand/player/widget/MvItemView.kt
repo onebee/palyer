@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.hand.player.R
 import com.hand.player.model.VideosBean
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_mv.view.*
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/7.
@@ -25,6 +27,12 @@ class MvItemView : RelativeLayout {
 
 
     fun setData(data: VideosBean) {
+
+        artist.text = data.artistName
+
+        title.text = data.title
+
+        Picasso.with(context).load(data.playListPic).into(bg)
 
 
     }
