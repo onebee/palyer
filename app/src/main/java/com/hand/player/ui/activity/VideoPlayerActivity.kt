@@ -20,6 +20,10 @@ class VideoPlayerActivity : BaseActivity() {
         info { videoPlayBean.toString() }
 
         videoView.setVideoPath(videoPlayBean.url)
-        videoView.start()
+
+        videoView.setOnPreparedListener {
+
+            videoView.start()
+        }
     }
 }

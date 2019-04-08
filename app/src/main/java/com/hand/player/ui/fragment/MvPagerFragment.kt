@@ -8,7 +8,7 @@ import com.hand.player.model.MvPagerBean
 import com.hand.player.model.VideoPlayBean
 import com.hand.player.model.VideosBean
 import com.hand.player.presenter.impl.MvListPresenterImpl
-import com.hand.player.ui.activity.VideoPlayerActivity
+import com.hand.player.ui.activity.TextureVideoPlayerActivity
 import com.hand.player.ui.view.MvListView
 import com.hand.player.widget.MvItemView
 import org.jetbrains.anko.support.v4.startActivity
@@ -45,7 +45,7 @@ class MvPagerFragment : BaseListFragment<MvPagerBean, VideosBean, MvItemView>(),
         adapter.setMyLisenter {
 //            myToash(it.toString())
             val videoPlayBean = VideoPlayBean(it.id,it.title,it.url)
-            startActivity<VideoPlayerActivity>("item" to videoPlayBean)
+            startActivity<TextureVideoPlayerActivity>("item" to videoPlayBean)
         }
     }
 }
