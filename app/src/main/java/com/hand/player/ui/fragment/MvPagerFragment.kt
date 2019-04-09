@@ -8,7 +8,7 @@ import com.hand.player.model.MvPagerBean
 import com.hand.player.model.VideoPlayBean
 import com.hand.player.model.VideosBean
 import com.hand.player.presenter.impl.MvListPresenterImpl
-import com.hand.player.ui.activity.TextureVideoPlayerActivity
+import com.hand.player.ui.activity.IjkVideoPlayerActivity
 import com.hand.player.ui.view.MvListView
 import com.hand.player.widget.MvItemView
 import org.jetbrains.anko.support.v4.startActivity
@@ -44,8 +44,9 @@ class MvPagerFragment : BaseListFragment<MvPagerBean, VideosBean, MvItemView>(),
         // 设置条目点击事件监听
         adapter.setMyLisenter {
 //            myToash(it.toString())
+            //todo player
             val videoPlayBean = VideoPlayBean(it.id,it.title,it.url)
-            startActivity<TextureVideoPlayerActivity>("item" to videoPlayBean)
+            startActivity<IjkVideoPlayerActivity>("item" to videoPlayBean)
         }
     }
 }

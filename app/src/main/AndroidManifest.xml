@@ -26,6 +26,7 @@
         <activity android:name=".ui.activity.AboutActivity"/>
         <activity android:name=".ui.activity.VideoPlayerActivity"/>
         <activity android:name=".ui.activity.TextureVideoPlayerActivity"/>
+        <activity android:name=".ui.activity.IjkVideoPlayerActivity"/>
     </application>
 
 </manifest>

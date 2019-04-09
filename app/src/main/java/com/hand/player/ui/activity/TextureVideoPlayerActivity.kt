@@ -57,7 +57,7 @@ class TextureVideoPlayerActivity : BaseActivity(), TextureView.SurfaceTextureLis
                mediaPlayer.start()
 
                // 旋转画面
-               texture_video.rotation=180f
+               texture_video.rotation=90f
            }
        }
 
