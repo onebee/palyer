@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -45,7 +50,9 @@ dependencies {
     implementation project(':vitamio')
     implementation 'com.dou361.ijkplayer:jjdxm-ijkplayer:1.0.2'
     //jiecaovideoplayer
-    implementation 'fm.jiecao:jiecaovideoplayer:5.8.1'
+//    implementation 'fm.jiecao:jiecaovideoplayer:5.8.1'
+    implementation 'cn.jzvd:jiaozivideoplayer:7.0_preview'
+
     implementation 'com.android.support:cardview-v7:27.1.1'
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
