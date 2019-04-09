@@ -1,11 +1,12 @@
 package com.hand.player.ui.activity
 
+import android.support.v4.view.ViewPager
 import cn.jzvd.Jzvd
 import com.hand.player.R
+import com.hand.player.adapter.VideoPagerAdapter
 import com.hand.player.base.BaseActivity
 import com.hand.player.model.VideoPlayBean
 import kotlinx.android.synthetic.main.activity_jiecao_video_player.*
-import org.jetbrains.anko.info
 
 
 /**
@@ -19,7 +20,6 @@ class JieCaoVideoPlayerActivity : BaseActivity() {
     override fun initData() {
 
         val data = intent.data
-        info { data.toString() }
         if (data == null) {
             val videoPlayBean = intent.getParcelableExtra<VideoPlayBean>("item")
 
@@ -45,6 +45,43 @@ class JieCaoVideoPlayerActivity : BaseActivity() {
             }
 
         }
+
+
+    }
+
+    override fun initListener() {
+
+        viewPager.adapter = VideoPagerAdapter(supportFragmentManager)
+
+        rg.setOnCheckedChangeListener { _, i ->
+
+            when (i) {
+                R.id.rb1 -> viewPager.currentItem = 0
+                R.id.rb2 -> viewPager.currentItem = 1
+                R.id.rb3 -> viewPager.currentItem = 2
+
+            }
+
+        }
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0-> rg.check(R.id.rb1)
+                    1-> rg.check(R.id.rb2)
+                    2-> rg.check(R.id.rb3)
+                }
+            }
+
+        })
 
 
     }
