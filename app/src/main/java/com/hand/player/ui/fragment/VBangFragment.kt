@@ -1,10 +1,9 @@
 package com.hand.player.ui.fragment
 
+import android.content.AsyncQueryHandler
 import android.content.ContentResolver
 import android.database.Cursor
 import android.os.AsyncTask
-import android.os.Handler
-import android.os.Message
 import android.provider.MediaStore
 import android.view.View
 import com.hand.player.R
@@ -17,20 +16,20 @@ import com.hand.player.util.CursorUtil
 class VBangFragment : BaseFragment() {
 
 
-    val handle = object : Handler() {
-
-        override fun handleMessage(msg: Message?) {
-
-            msg?.let {
-                val cursor: Cursor = msg.obj as Cursor
-                CursorUtil.logCursor(cursor)
-
-            }
-
-
-        }
-
-    }
+//    val handle = object : Handler() {
+//
+//        override fun handleMessage(msg: Message?) {
+//
+//            msg?.let {
+//                val cursor: Cursor = msg.obj as Cursor
+//                CursorUtil.logCursor(cursor)
+//
+//            }
+//
+//
+//        }
+//
+//    }
 
     override fun initView(): View? {
 
@@ -70,7 +69,27 @@ class VBangFragment : BaseFragment() {
 //            handle.sendMessage(msg)
 //        }).start()
 
-        AudioTask().execute(resolver)
+//        AudioTask().execute(resolver)
+
+        val handler = object : AsyncQueryHandler(resolver) {
+
+            override fun onQueryComplete(token: Int, cookie: Any?, cursor: Cursor?) {
+
+                CursorUtil.logCursor(cursor)
+
+            }
+
+        }
+
+        handler.startQuery(
+            0, null, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.SIZE,
+                MediaStore.Audio.Media.DISPLAY_NAME,
+                MediaStore.Audio.Media.ARTIST
+            ), null, null, null
+        )
 
     }
 
@@ -80,6 +99,7 @@ class VBangFragment : BaseFragment() {
             super.onPreExecute()
 
         }
+
         override fun doInBackground(vararg params: ContentResolver?): Cursor? {
 
             return params[0]?.query(
@@ -99,7 +119,6 @@ class VBangFragment : BaseFragment() {
             CursorUtil.logCursor(result)
 
         }
-
 
 
     }
