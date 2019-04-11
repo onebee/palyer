@@ -35,7 +35,7 @@ class AudioService : Service() {
 
         binder.playItem()
 
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
 
     }
 
