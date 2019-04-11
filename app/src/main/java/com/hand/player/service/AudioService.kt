@@ -45,7 +45,7 @@ class AudioService : Service() {
 
     }
 
-    inner class AudioBinder : Binder(), MediaPlayer.OnPreparedListener {
+    inner class AudioBinder : Binder(),IService, MediaPlayer.OnPreparedListener {
         override fun onPrepared(mp: MediaPlayer?) {
             mediaPlayer?.start()
 

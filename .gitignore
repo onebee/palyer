@@ -13,5 +13,7 @@
 .externalNativeBuild
 .idea/
 .idea/sonarlint/
+vitamio
+.idea/misc.xml
 
 

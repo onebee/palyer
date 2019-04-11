@@ -2,13 +2,12 @@ package com.hand.player.ui.activity
 
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import com.hand.player.R
 import com.hand.player.base.BaseActivity
-import com.hand.player.model.AudioBean
 import com.hand.player.service.AudioService
+import com.hand.player.service.IService
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
@@ -22,8 +21,8 @@ class AudioPlayerActivity : BaseActivity() {
 
     override fun initData() {
 
-        val list = intent.getParcelableArrayListExtra<AudioBean>("list")
-        val position = intent.getIntExtra("position",-1)
+//        val list = intent.getParcelableArrayListExtra<AudioBean>("list")
+//        val position = intent.getIntExtra("position", -1)
 
 //        info { list.toString() }
 //        info { position.toString() }
@@ -38,12 +37,15 @@ class AudioPlayerActivity : BaseActivity() {
 //        mediaPlayer.prepareAsync()
 
 
-        val intent = Intent(this, AudioService::class.java)
-        intent.putExtra("list",list)
-        intent.putExtra("position",position)
+//        val intent = Intent(this, AudioService::class.java)
+//        intent.putExtra("list", list)
+//        intent.putExtra("position", position)
+
+        val intent = intent
+        intent.setClass(this,AudioService::class.java)
         startService(intent)
 
-        bindService(intent,connection,Context.BIND_AUTO_CREATE)
+        bindService(intent, connection, Context.BIND_AUTO_CREATE)
 
     }
 
@@ -52,11 +54,14 @@ class AudioPlayerActivity : BaseActivity() {
         unbindService(connection)
     }
 
-    class AudioConnection : ServiceConnection {
+    var iService: IService? = null
+
+    inner class AudioConnection : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            iService = service as IService
         }
 
     }
