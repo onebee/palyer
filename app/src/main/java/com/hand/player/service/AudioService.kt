@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
 import com.hand.player.model.AudioBean
+import org.greenrobot.eventbus.EventBus
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
@@ -68,6 +69,15 @@ class AudioService : Service() {
 
         override fun onPrepared(mp: MediaPlayer?) {
             mediaPlayer?.start()
+            // notice ui
+            notifyUpdateUi()
+
+        }
+
+        private fun notifyUpdateUi() {
+
+            EventBus.getDefault().post(list?.get(position))
+
 
         }
 

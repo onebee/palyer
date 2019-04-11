@@ -7,14 +7,24 @@ import android.os.IBinder
 import android.view.View
 import com.hand.player.R
 import com.hand.player.base.BaseActivity
+import com.hand.player.model.AudioBean
 import com.hand.player.service.AudioService
 import com.hand.player.service.IService
 import kotlinx.android.synthetic.main.activity_music_player_bottom.*
+import kotlinx.android.synthetic.main.activity_music_player_top.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.info
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
  */
 class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
+
+    // 记录播放歌曲
+    var audioBean:AudioBean? = null
+
     override fun onClick(v: View?) {
 
         when (v?.id) {
@@ -30,8 +40,21 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private fun updatePlayStateButton() {
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEventMAIN(itemBean:AudioBean){
+        info { "receive : "+itemBean.toString() }
+        this.audioBean = itemBean
+
+        audio_title.text = itemBean.display_name
+        artist.text = itemBean.artist
+
+        updatePlayStateButton()
+
+
+    }
+
+    private fun updatePlayStateButton() {
         val isPlaying = iService?.isPlaying()
         isPlaying?.let {
 
@@ -39,21 +62,19 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
                 state.setImageResource(R.drawable.selector_btn_audio_play)
             } else {
                 state.setImageResource(R.drawable.selector_btn_audio_pause)
-
             }
         }
-
-
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_audio_player
     }
-
     val connection by lazy { AudioConnection() }
 
     override fun initData() {
 
+
+        EventBus.getDefault().register(this)
 //        val list = intent.getParcelableArrayListExtra<AudioBean>("list")
 //        val position = intent.getIntExtra("position", -1)
 
@@ -91,6 +112,7 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         unbindService(connection)
+        EventBus.getDefault().unregister(this)
     }
 
     var iService: IService? = null
