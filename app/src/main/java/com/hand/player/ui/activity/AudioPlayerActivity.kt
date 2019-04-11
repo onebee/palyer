@@ -4,15 +4,48 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.view.View
 import com.hand.player.R
 import com.hand.player.base.BaseActivity
 import com.hand.player.service.AudioService
 import com.hand.player.service.IService
+import kotlinx.android.synthetic.main.activity_music_player_bottom.*
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
  */
-class AudioPlayerActivity : BaseActivity() {
+class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.state -> updatePlayState()
+
+        }
+    }
+
+    private fun updatePlayState() {
+        iService?.updatePlayState()
+
+        updatePlayStateButton()
+
+    }
+
+    private fun updatePlayStateButton() {
+
+        val isPlaying = iService?.isPlaying()
+        isPlaying?.let {
+
+            if (isPlaying) {
+                state.setImageResource(R.drawable.selector_btn_audio_play)
+            } else {
+                state.setImageResource(R.drawable.selector_btn_audio_pause)
+
+            }
+        }
+
+
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.activity_audio_player
     }
@@ -42,11 +75,17 @@ class AudioPlayerActivity : BaseActivity() {
 //        intent.putExtra("position", position)
 
         val intent = intent
-        intent.setClass(this,AudioService::class.java)
+        intent.setClass(this, AudioService::class.java)
         startService(intent)
 
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
 
+    }
+
+
+    override fun initListener() {
+        //
+        state.setOnClickListener(this)
     }
 
     override fun onDestroy() {
