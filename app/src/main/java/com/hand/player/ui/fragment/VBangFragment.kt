@@ -12,10 +12,13 @@ import android.view.View
 import com.hand.player.R
 import com.hand.player.adapter.VbangAdapter
 import com.hand.player.base.BaseFragment
+import com.hand.player.model.AudioBean
+import com.hand.player.ui.activity.AudioPlayerActivity
 import com.hand.player.util.CursorUtil
 import kotlinx.android.synthetic.main.fragment_vbang.*
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.yesButton
 
 /**
@@ -188,6 +191,17 @@ class VBangFragment : BaseFragment() {
         adapter = VbangAdapter(context, null)
 
         listView.adapter = adapter
+
+        listView.setOnItemClickListener { adapterView, view, i, l ->
+
+            val cursor = adapter?.getItem(i) as Cursor
+            // 通过当前位置cursor获取播放列表
+            val list: ArrayList<AudioBean> = AudioBean.getAudioBeans(cursor)
+
+            startActivity<AudioPlayerActivity>("list" to list, "position" to i)
+
+
+        }
     }
 
     override fun onDestroy() {
