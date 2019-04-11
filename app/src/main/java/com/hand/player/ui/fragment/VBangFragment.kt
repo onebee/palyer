@@ -7,8 +7,10 @@ import android.os.AsyncTask
 import android.provider.MediaStore
 import android.view.View
 import com.hand.player.R
+import com.hand.player.adapter.VbangAdapter
 import com.hand.player.base.BaseFragment
 import com.hand.player.util.CursorUtil
+import kotlinx.android.synthetic.main.fragment_vbang.*
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/5.
@@ -77,13 +79,17 @@ class VBangFragment : BaseFragment() {
 
                 CursorUtil.logCursor(cursor)
 
+                (cookie as VbangAdapter).swapCursor(cursor)
+
+
             }
 
         }
 
         handler.startQuery(
-            0, null, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            0, adapter, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             arrayOf(
+                MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media.SIZE,
                 MediaStore.Audio.Media.DISPLAY_NAME,
@@ -120,6 +126,21 @@ class VBangFragment : BaseFragment() {
 
         }
 
+
+    }
+
+
+    var adapter: VbangAdapter? = null
+
+    override fun initListener() {
+        adapter = VbangAdapter(context, null)
+
+        listView.adapter = adapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter?.changeCursor(null)
 
     }
 }
