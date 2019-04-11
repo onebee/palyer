@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/animation_list"/>
 
-    <com.itheima.player.widget.LyricView
-        android:id="@+id/lyricView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!--<com.itheima.player.widget.LyricView-->
+        <!--android:id="@+id/lyricView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 </LinearLayout>

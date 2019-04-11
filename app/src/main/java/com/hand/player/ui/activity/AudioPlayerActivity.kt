@@ -3,6 +3,7 @@ package com.hand.player.ui.activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
+import android.graphics.drawable.AnimationDrawable
 import android.os.IBinder
 import android.view.View
 import com.hand.player.R
@@ -11,6 +12,7 @@ import com.hand.player.model.AudioBean
 import com.hand.player.service.AudioService
 import com.hand.player.service.IService
 import kotlinx.android.synthetic.main.activity_music_player_bottom.*
+import kotlinx.android.synthetic.main.activity_music_player_middle.*
 import kotlinx.android.synthetic.main.activity_music_player_top.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -24,6 +26,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
 
     // 记录播放歌曲
     var audioBean:AudioBean? = null
+
+    var drawable : AnimationDrawable? = null
 
     override fun onClick(v: View?) {
 
@@ -50,6 +54,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
         artist.text = itemBean.artist
 
         updatePlayStateButton()
+        drawable = audio_anim.drawable as AnimationDrawable
+        drawable?.start()
 
 
     }
@@ -60,8 +66,10 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
 
             if (isPlaying) {
                 state.setImageResource(R.drawable.selector_btn_audio_play)
+                drawable?.start()
             } else {
                 state.setImageResource(R.drawable.selector_btn_audio_pause)
+                drawable?.stop()
             }
         }
     }

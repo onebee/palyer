@@ -7,11 +7,11 @@
 
     <include layout="@layout/activity_music_player_top"/>
 
-    <!--<include-->
-            <!--layout="@layout/activity_music_player_middle"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="1"/>-->
+    <include
+            layout="@layout/activity_music_player_middle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
     <TextView android:layout_width="match_parent"
               android:layout_height="0dp"
