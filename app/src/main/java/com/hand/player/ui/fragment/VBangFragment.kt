@@ -1,16 +1,22 @@
 package com.hand.player.ui.fragment
 
+import android.Manifest
 import android.content.AsyncQueryHandler
 import android.content.ContentResolver
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.os.AsyncTask
 import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
 import android.view.View
 import com.hand.player.R
 import com.hand.player.adapter.VbangAdapter
 import com.hand.player.base.BaseFragment
 import com.hand.player.util.CursorUtil
 import kotlinx.android.synthetic.main.fragment_vbang.*
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.yesButton
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/5.
@@ -41,7 +47,6 @@ class VBangFragment : BaseFragment() {
 
     override fun initData() {
 
-        val resolver = context?.contentResolver
 
 //        val cursor = resolver?.query(
 //            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -72,7 +77,55 @@ class VBangFragment : BaseFragment() {
 //        }).start()
 
 //        AudioTask().execute(resolver)
+        handlePermission()
+//        loadData()
 
+    }
+
+    private fun handlePermission() {
+
+        val permission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val checkSelfPermission = ActivityCompat.checkSelfPermission(this.context!!, permission)
+        if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {
+            loadData()
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!, permission)) {
+
+                // 需要弹出
+                alert("我们只会访问音乐文件", "温馨提示") {
+                    yesButton { myRequestPermission() }
+                    noButton { }
+                }.show()
+
+            } else {
+
+                myRequestPermission()
+            }
+        }
+
+
+    }
+
+    private fun myRequestPermission() {
+        val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        requestPermissions(permission, 1)
+
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadData()
+            }
+        }
+
+    }
+
+    private fun loadData() {
+        val resolver = context?.contentResolver
         val handler = object : AsyncQueryHandler(resolver) {
 
             override fun onQueryComplete(token: Int, cookie: Any?, cursor: Cursor?) {
@@ -96,7 +149,6 @@ class VBangFragment : BaseFragment() {
                 MediaStore.Audio.Media.ARTIST
             ), null, null, null
         )
-
     }
 
     class AudioTask : AsyncTask<ContentResolver, Void, Cursor>() {
