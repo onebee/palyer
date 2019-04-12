@@ -47,6 +47,10 @@ class PlayListPopWindow(cx: Context, adapter: BaseAdapter, listener: AdapterView
         // api25低版本 - 设置背景图,能够响应返回按钮
         setBackgroundDrawable(ColorDrawable())
 
+        // 处理popwindow 动画
+        animationStyle = R.style.pop
+
+
 
     }
 }
