@@ -15,6 +15,7 @@ import com.hand.player.model.AudioBean
 import com.hand.player.service.AudioService
 import com.hand.player.service.IService
 import com.hand.player.util.StringUtil
+import com.hand.player.widget.PlayListPopWindow
 import kotlinx.android.synthetic.main.activity_music_player_bottom.*
 import kotlinx.android.synthetic.main.activity_music_player_middle.*
 import kotlinx.android.synthetic.main.activity_music_player_top.*
@@ -60,7 +61,22 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
 
             R.id.next -> iService?.playNext()
 
+            R.id.playlist -> showPlayList()
+
         }
+    }
+
+    /***
+     *显示播放列表
+     */
+    fun showPlayList() {
+
+        // 获取底部高度
+        val bottomH = audio_player_bottom.height
+        val popWindow = PlayListPopWindow(this)
+
+        popWindow.showAsDropDown(audio_player_bottom,0,-bottomH)
+
     }
 
 
@@ -224,6 +240,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
 
         pre.setOnClickListener(this)
         next.setOnClickListener(this)
+
+        playlist.setOnClickListener(this)
     }
 
     override fun onDestroy() {
