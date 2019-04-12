@@ -8,8 +8,10 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.view.View
+import android.widget.AdapterView
 import android.widget.SeekBar
 import com.hand.player.R
+import com.hand.player.adapter.PopAdapter
 import com.hand.player.base.BaseActivity
 import com.hand.player.model.AudioBean
 import com.hand.player.service.AudioService
@@ -27,8 +29,8 @@ import org.jetbrains.anko.info
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
  */
-class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-
+class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeekBarChangeListener,
+    AdapterView.OnItemClickListener {
 
     // 记录播放歌曲
     var audioBean: AudioBean? = null
@@ -71,11 +73,17 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
      */
     fun showPlayList() {
 
-        // 获取底部高度
-        val bottomH = audio_player_bottom.height
-        val popWindow = PlayListPopWindow(this)
+        val list = iService?.getPlayList()
 
-        popWindow.showAsDropDown(audio_player_bottom,0,-bottomH)
+        list?.let {
+            val adapter = PopAdapter(list)
+            // 获取底部高度
+            val bottomH = audio_player_bottom.height
+            val popWindow = PlayListPopWindow(this, adapter, this)
+
+            popWindow.showAsDropDown(audio_player_bottom, 0, -bottomH)
+        }
+
 
     }
 
@@ -284,4 +292,14 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
+
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+
+        // 播放当前歌曲
+        iService?.playPosition(position)
+
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.hand.player.service
 
+import com.hand.player.model.AudioBean
+
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
  */
@@ -13,4 +15,6 @@ interface IService {
     fun getPlayMode(): Int
     fun playPre()
     fun playNext()
+    fun getPlayList(): List<AudioBean>?
+    fun playPosition(position: Int)
 }

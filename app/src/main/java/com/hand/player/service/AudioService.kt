@@ -50,13 +50,12 @@ class AudioService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         list = intent?.getParcelableArrayListExtra<AudioBean>("list")
-       val pos= intent?.getIntExtra("position", -1) ?: -1
+        val pos = intent?.getIntExtra("position", -1) ?: -1
         if (pos != position) {
             position = pos
             binder.playItem()
 
-        }
-        else {
+        } else {
             binder.notifyUpdateUi()
         }
 
@@ -72,6 +71,19 @@ class AudioService : Service() {
     }
 
     inner class AudioBinder : Binder(), IService, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+
+        /**
+         * 播放当前位置的歌曲
+         */
+        override fun playPosition(position: Int) {
+            this@AudioService.position = position
+            playItem()
+
+        }
+
+        override fun getPlayList(): List<AudioBean>? {
+            return list
+        }
 
 
         override fun playPre() {
@@ -203,11 +215,11 @@ class AudioService : Service() {
 
         }
 
-         fun notifyUpdateUi() {
+        fun notifyUpdateUi() {
 
             EventBus.getDefault().post(list?.get(position))
 
-             Log.e("------","size" + list?.size  + "  pos :" + position)
+            Log.e("------", "size" + list?.size + "  pos :" + position)
 
         }
 
@@ -216,7 +228,7 @@ class AudioService : Service() {
             if (mediaPlayer != null) {
                 mediaPlayer?.reset()
                 mediaPlayer?.release()
-                mediaPlayer =null
+                mediaPlayer = null
             }
             mediaPlayer = MediaPlayer()
 
