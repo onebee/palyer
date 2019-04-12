@@ -19,9 +19,12 @@ class AudioService : Service() {
     //    val mediaPlayer by lazy { MediaPlayer() }
     var mediaPlayer: MediaPlayer? = null
 
-    val MODE_ALL =1
-    val MODE_SINGLE = 2
-    val MODE_RANDOM = 3
+    companion object {
+        val MODE_ALL = 1
+        val MODE_SINGLE = 2
+        val MODE_RANDOM = 3
+
+    }
 
 
     var mode = MODE_ALL
@@ -56,6 +59,23 @@ class AudioService : Service() {
 
     inner class AudioBinder : Binder(), IService, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
 
+        override fun getPlayMode(): Int {
+            return mode
+        }
+
+        /***
+         * 修改播放模式
+         */
+        override fun updatePlayMode() {
+
+            when (mode) {
+                MODE_ALL -> mode = MODE_SINGLE
+                MODE_SINGLE -> mode = MODE_RANDOM
+                MODE_RANDOM -> mode = MODE_ALL
+            }
+
+        }
+
 
         override fun onCompletion(mp: MediaPlayer?) {
 
@@ -71,12 +91,12 @@ class AudioService : Service() {
             when (mode) {
                 MODE_ALL -> {
                     list?.let {
-                        position = (position+1)%it.size
+                        position = (position + 1) % it.size
                     }
 
                 }
 //                MODE_SINGLE ->
-                MODE_RANDOM ->{
+                MODE_RANDOM -> {
 
                     list?.let {
 
@@ -86,7 +106,6 @@ class AudioService : Service() {
             }
 
             playItem()
-
 
 
         }
@@ -102,11 +121,11 @@ class AudioService : Service() {
 
         override fun getProgress(): Int {
 
-            return mediaPlayer?.currentPosition?:0
+            return mediaPlayer?.currentPosition ?: 0
         }
 
         override fun getDuration(): Int {
-            return mediaPlayer?.duration?:0
+            return mediaPlayer?.duration ?: 0
 
         }
 

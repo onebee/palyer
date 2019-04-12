@@ -9,4 +9,6 @@ interface IService {
     fun isPlaying(): Boolean?
     fun getProgress(): Int
     fun seekTo(progress: Int)
+    fun updatePlayMode()
+    fun getPlayMode(): Int
 }

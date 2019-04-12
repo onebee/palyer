@@ -54,7 +54,43 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
         when (v?.id) {
             R.id.state -> updatePlayState()
 
+            R.id.mode -> updatePlayMode()
+
         }
+    }
+
+
+    /**
+     * 更新播放模式
+     */
+    private fun updatePlayMode() {
+        // 修改service 中的mode
+        iService?.updatePlayMode()
+        updatePlayModeBtn()
+
+
+    }
+
+    /**
+     * 根据播放模式修改图标
+     */
+    private fun updatePlayModeBtn() {
+        iService?.let {
+            val mode1: Int = it.getPlayMode()
+
+            when (mode1) {
+                AudioService.MODE_ALL -> mode.setImageResource(R.drawable.selector_btn_playmode_order)
+
+
+                AudioService.MODE_SINGLE -> mode.setImageResource(R.drawable.selector_btn_playmode_single)
+
+
+                AudioService.MODE_RANDOM -> mode.setImageResource(R.drawable.selector_btn_playmode_random)
+
+            }
+        }
+
+
     }
 
     private fun updatePlayState() {
@@ -117,7 +153,7 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
                 state.setImageResource(R.drawable.selector_btn_audio_play)
                 drawable?.start()
                 // 开始更新进度
-                handle.sendEmptyMessageDelayed(MSG_PROGRESS,1000)
+                handle.sendEmptyMessageDelayed(MSG_PROGRESS, 1000)
             } else {
                 state.setImageResource(R.drawable.selector_btn_audio_pause)
                 drawable?.stop()
@@ -174,6 +210,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
         }
 
         progress_sk.setOnSeekBarChangeListener(this)
+
+        mode.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -204,7 +242,7 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
      */
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
 
-        if (!fromUser)return
+        if (!fromUser) return
         iService?.seekTo(progress)
         updateProgress(progress)
 
