@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import com.hand.player.model.AudioBean
 import org.greenrobot.eventbus.EventBus
 import java.util.*
@@ -16,7 +17,7 @@ import java.util.*
 class AudioService : Service() {
 
     var list: ArrayList<AudioBean>? = null
-    var position: Int = 0
+    var position: Int = -2  // 当前正在播放的pos
     //    val mediaPlayer by lazy { MediaPlayer() }
     var mediaPlayer: MediaPlayer? = null
 
@@ -49,9 +50,16 @@ class AudioService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         list = intent?.getParcelableArrayListExtra<AudioBean>("list")
-        position = intent?.getIntExtra("position", -1) ?: -1
+       val pos= intent?.getIntExtra("position", -1) ?: -1
+        if (pos != position) {
+            position = pos
+            binder.playItem()
 
-        binder.playItem()
+        }
+        else {
+            binder.notifyUpdateUi()
+        }
+
 
         return START_NOT_STICKY
 
@@ -118,14 +126,14 @@ class AudioService : Service() {
 
         override fun onCompletion(mp: MediaPlayer?) {
 
-            antoPlayNext()
+            autoPlayNext()
 
         }
 
         /***
          * 根据播放模式 自动播放下一曲
          */
-        private fun antoPlayNext() {
+        private fun autoPlayNext() {
 
             when (mode) {
                 MODE_ALL -> {
@@ -195,10 +203,11 @@ class AudioService : Service() {
 
         }
 
-        private fun notifyUpdateUi() {
+         fun notifyUpdateUi() {
 
             EventBus.getDefault().post(list?.get(position))
 
+             Log.e("------","size" + list?.size  + "  pos :" + position)
 
         }
 
