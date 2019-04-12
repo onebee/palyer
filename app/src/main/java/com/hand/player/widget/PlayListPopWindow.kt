@@ -2,6 +2,7 @@ package com.hand.player.widget
 
 import android.content.Context
 import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -25,5 +26,15 @@ class PlayListPopWindow(cx: Context) : PopupWindow() {
 
         val windowHeight = point.y
         height = windowHeight * 3 / 5
+
+        // 设置可以获取焦点
+        isFocusable = true
+        // 设置外部点击
+        isOutsideTouchable=true
+
+        // api25低版本 - 设置背景图,能够响应返回按钮
+        setBackgroundDrawable(ColorDrawable())
+
+
     }
 }
