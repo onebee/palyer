@@ -203,6 +203,12 @@ class AudioService : Service() {
         }
 
         fun playItem() {
+            // 如果mediaPlayer 存在 先释放
+            if (mediaPlayer != null) {
+                mediaPlayer?.reset()
+                mediaPlayer?.release()
+                mediaPlayer =null
+            }
             mediaPlayer = MediaPlayer()
 
             mediaPlayer?.let {
