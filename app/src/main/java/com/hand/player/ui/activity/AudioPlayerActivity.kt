@@ -118,7 +118,11 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
 
         progress_sk.max = duration
 
+        //更新播放进度
         startUpdateProgress()
+
+        //更新播放模式图标
+        updatePlayModeBtn()
 
 
     }
