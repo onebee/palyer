@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.view.View
+import android.widget.SeekBar
 import com.hand.player.R
 import com.hand.player.base.BaseActivity
 import com.hand.player.model.AudioBean
@@ -25,7 +26,8 @@ import org.jetbrains.anko.info
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
  */
-class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
+class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+
 
     // 记录播放歌曲
     var audioBean: AudioBean? = null
@@ -170,6 +172,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
         back.setOnClickListener {
             finish()
         }
+
+        progress_sk.setOnSeekBarChangeListener(this)
     }
 
     override fun onDestroy() {
@@ -192,5 +196,24 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
             iService = service as IService
         }
 
+    }
+
+
+    /***
+     * fromUser 是否用户触摸
+     */
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+        if (!fromUser)return
+        iService?.seekTo(progress)
+        updateProgress(progress)
+
+
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
 }
