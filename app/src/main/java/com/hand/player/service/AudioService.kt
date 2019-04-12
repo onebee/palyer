@@ -20,7 +20,7 @@ class AudioService : Service() {
     //    val mediaPlayer by lazy { MediaPlayer() }
     var mediaPlayer: MediaPlayer? = null
 
-    val sp by lazy {   getSharedPreferences("config", Context.MODE_PRIVATE)}
+    val sp by lazy { getSharedPreferences("config", Context.MODE_PRIVATE) }
 
     companion object {
         val MODE_ALL = 1
@@ -38,7 +38,7 @@ class AudioService : Service() {
         super.onCreate()
 
         // 获取播放模式
-      mode =   sp.getInt("mode", MODE_ALL)
+        mode = sp.getInt("mode", MODE_ALL)
 
     }
 
@@ -65,6 +65,38 @@ class AudioService : Service() {
 
     inner class AudioBinder : Binder(), IService, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
 
+
+        override fun playPre() {
+            // 获取要播放歌曲的position
+            list?.let {
+                when (mode) {
+
+                    MODE_RANDOM -> list?.let {
+                        position = Random().nextInt(it.size - 1)
+                    }
+                    else -> {
+                        if (position == 0) position = it.size - 1
+                        else position--
+                    }
+
+                }
+            }
+
+            playItem()
+
+        }
+
+        override fun playNext() {
+            list?.let {
+                when (mode) {
+
+                    MODE_RANDOM -> Random().nextInt(it.size - 1)
+                    else -> position = (position + 1) % it.size
+                }
+            }
+            playItem()
+        }
+
         override fun getPlayMode(): Int {
             return mode
         }
@@ -79,7 +111,7 @@ class AudioService : Service() {
                 MODE_SINGLE -> mode = MODE_RANDOM
                 MODE_RANDOM -> mode = MODE_ALL
             }
-            sp.edit().putInt("mode",mode).apply()
+            sp.edit().putInt("mode", mode).apply()
 
         }
 

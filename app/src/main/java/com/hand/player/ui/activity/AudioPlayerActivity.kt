@@ -56,6 +56,10 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
 
             R.id.mode -> updatePlayMode()
 
+            R.id.pre -> iService?.playPre()
+
+            R.id.next -> iService?.playNext()
+
         }
     }
 
@@ -216,6 +220,9 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
         progress_sk.setOnSeekBarChangeListener(this)
 
         mode.setOnClickListener(this)
+
+        pre.setOnClickListener(this)
+        next.setOnClickListener(this)
     }
 
     override fun onDestroy() {
