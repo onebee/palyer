@@ -77,6 +77,9 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
 
         // update play process
         duration = iService?.getDuration() ?: 0
+
+        progress_sk.max = duration
+
         startUpdateProgress()
 
 
@@ -98,9 +101,9 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateProgress(pro: Int) {
-      progress.text =   StringUtil.parseDuration(pro) + "/" + StringUtil.parseDuration(duration)
-
-
+        progress.text = StringUtil.parseDuration(pro) + "/" + StringUtil.parseDuration(duration)
+        //更新进度条
+        progress_sk.setProgress(pro)
 
     }
 
@@ -111,9 +114,13 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
             if (isPlaying) {
                 state.setImageResource(R.drawable.selector_btn_audio_play)
                 drawable?.start()
+                // 开始更新进度
+                handle.sendEmptyMessageDelayed(MSG_PROGRESS,1000)
             } else {
                 state.setImageResource(R.drawable.selector_btn_audio_pause)
                 drawable?.stop()
+                //停止更新进度
+                handle.removeMessages(MSG_PROGRESS)
             }
         }
     }
@@ -169,6 +176,10 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
         super.onDestroy()
         unbindService(connection)
         EventBus.getDefault().unregister(this)
+
+        // 清空handler 发送的所有消息
+        handle.removeCallbacksAndMessages(null)
+
     }
 
     var iService: IService? = null
