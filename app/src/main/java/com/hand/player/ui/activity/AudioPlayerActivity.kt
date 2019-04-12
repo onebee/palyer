@@ -4,13 +4,16 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
 import android.graphics.drawable.AnimationDrawable
+import android.os.Handler
 import android.os.IBinder
+import android.os.Message
 import android.view.View
 import com.hand.player.R
 import com.hand.player.base.BaseActivity
 import com.hand.player.model.AudioBean
 import com.hand.player.service.AudioService
 import com.hand.player.service.IService
+import com.hand.player.util.StringUtil
 import kotlinx.android.synthetic.main.activity_music_player_bottom.*
 import kotlinx.android.synthetic.main.activity_music_player_middle.*
 import kotlinx.android.synthetic.main.activity_music_player_top.*
@@ -25,9 +28,24 @@ import org.jetbrains.anko.info
 class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
 
     // 记录播放歌曲
-    var audioBean:AudioBean? = null
+    var audioBean: AudioBean? = null
 
-    var drawable : AnimationDrawable? = null
+    var duration: Int = 0
+
+    var drawable: AnimationDrawable? = null
+
+    val handle = object : Handler() {
+
+        override fun handleMessage(msg: Message?) {
+            when (msg?.what) {
+                MSG_PROGRESS -> startUpdateProgress()
+            }
+
+        }
+    }
+
+    val MSG_PROGRESS = 0
+
 
     override fun onClick(v: View?) {
 
@@ -46,8 +64,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMAIN(itemBean:AudioBean){
-        info { "receive : "+itemBean.toString() }
+    fun onEventMAIN(itemBean: AudioBean) {
+        info { "receive : " + itemBean.toString() }
         this.audioBean = itemBean
 
         audio_title.text = itemBean.display_name
@@ -56,6 +74,32 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
         updatePlayStateButton()
         drawable = audio_anim.drawable as AnimationDrawable
         drawable?.start()
+
+        // update play process
+        duration = iService?.getDuration() ?: 0
+        startUpdateProgress()
+
+
+    }
+
+    /***
+     * 开始更新进度
+     */
+    private fun startUpdateProgress() {
+        // 获取当前进度
+        val progress: Int = iService?.getProgress() ?: 0
+        //更新进度数据
+        updateProgress(progress)
+        // 定时获取进度
+
+        handle.sendEmptyMessageDelayed(MSG_PROGRESS, 1000)
+
+
+    }
+
+    private fun updateProgress(pro: Int) {
+      progress.text =   StringUtil.parseDuration(pro) + "/" + StringUtil.parseDuration(duration)
+
 
 
     }
@@ -77,6 +121,7 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
     override fun getLayoutId(): Int {
         return R.layout.activity_audio_player
     }
+
     val connection by lazy { AudioConnection() }
 
     override fun initData() {
@@ -115,6 +160,9 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener {
     override fun initListener() {
         //
         state.setOnClickListener(this)
+        back.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onDestroy() {

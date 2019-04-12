@@ -47,6 +47,16 @@ class AudioService : Service() {
     }
 
     inner class AudioBinder : Binder(), IService, MediaPlayer.OnPreparedListener {
+        override fun getProgress(): Int {
+
+            return mediaPlayer?.currentPosition?:0
+        }
+
+        override fun getDuration(): Int {
+            return mediaPlayer?.duration?:0
+
+        }
+
         override fun updatePlayState() {
             val isPlaying = isPlaying()
             isPlaying?.let {
