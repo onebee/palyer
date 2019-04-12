@@ -7,6 +7,7 @@ import android.os.Binder
 import android.os.IBinder
 import com.hand.player.model.AudioBean
 import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/11.
@@ -17,6 +18,13 @@ class AudioService : Service() {
     var position: Int = 0
     //    val mediaPlayer by lazy { MediaPlayer() }
     var mediaPlayer: MediaPlayer? = null
+
+    val MODE_ALL =1
+    val MODE_SINGLE = 2
+    val MODE_RANDOM = 3
+
+
+    var mode = MODE_ALL
 
     val binder by lazy { AudioBinder() }
 
@@ -46,7 +54,42 @@ class AudioService : Service() {
 
     }
 
-    inner class AudioBinder : Binder(), IService, MediaPlayer.OnPreparedListener {
+    inner class AudioBinder : Binder(), IService, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+
+
+        override fun onCompletion(mp: MediaPlayer?) {
+
+            antoPlayNext()
+
+        }
+
+        /***
+         * 根据播放模式 自动播放下一曲
+         */
+        private fun antoPlayNext() {
+
+            when (mode) {
+                MODE_ALL -> {
+                    list?.let {
+                        position = (position+1)%it.size
+                    }
+
+                }
+//                MODE_SINGLE ->
+                MODE_RANDOM ->{
+
+                    list?.let {
+
+                        position = Random().nextInt(it.size)
+                    }
+                }
+            }
+
+            playItem()
+
+
+
+        }
 
         /***
          * 跳转到当前进度 进行播放
@@ -106,6 +149,7 @@ class AudioService : Service() {
 
             mediaPlayer?.let {
                 it.setOnPreparedListener(this)
+                it.setOnCompletionListener(this)
                 it.setDataSource(list?.get(position)?.data)
                 it.prepareAsync()
             }
