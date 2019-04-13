@@ -86,6 +86,15 @@ class LyricView : View {
 
             val curX = viewW / 2
             val curY = centerY + (index - centerLine) * lineHeight
+            // 超出边界处理
+
+            // 处理超出上边界歌词
+            if (curY < 0) continue
+
+            // 下边界
+            if (curY > viewH + lineHeight) break
+
+
             val curText = list[index].content
             canvas?.drawText(curText, curX.toFloat(), curY.toFloat(), paint)
 
@@ -124,7 +133,37 @@ class LyricView : View {
 
     }
 
-    override fun layout(l: Int, t: Int, r: Int, b: Int) {
-        super.layout(l, t, r, b)
+    /**
+     * 传递当前播放
+     */
+    fun updateProgress(progress: Int) {
+        // 获取居中行的行号
+
+        //先判断是否是最后一行
+        if (progress >= list[list.size - 1].startTime) {
+
+            //最后一行居中
+            centerLine = list.size - 1
+        } else {
+            // 其他行居中 循环遍历集合
+            for (index in 0 until list.size - 1) {
+                // progress >= 当前行开始时间 & progress<下一行开始时间
+                val curStartTime = list[index].startTime
+                val nextStartTime = list[index + 1].startTime
+                if (progress in curStartTime..nextStartTime) {
+                    centerLine = index
+                    break
+
+                }
+
+
+            }
+        }
+
+        // 找到居中行之后 绘制当前多行歌词
+        invalidate() // onDraw 方法 内容的绘制
+//        postInvalidate() // onDraw方法 可以在子线程刷新绘制
+//        requestLayout()  // 布局参数改变时候刷新
+
     }
 }

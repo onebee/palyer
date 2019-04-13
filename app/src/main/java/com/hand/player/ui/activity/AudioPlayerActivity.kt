@@ -169,6 +169,10 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
 
         handle.sendEmptyMessageDelayed(MSG_PROGRESS, 1000)
 
+        // 更新歌词播放进度
+        lyricView.updateProgress(progress)
+
+
 
     }
 
