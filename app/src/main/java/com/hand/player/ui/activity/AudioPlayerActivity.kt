@@ -154,6 +154,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
         //更新播放模式图标
         updatePlayModeBtn()
 
+        //设置歌词播放总进度
+        lyricView.setMyDuration(duration)
 
     }
 
@@ -167,7 +169,8 @@ class AudioPlayerActivity : BaseActivity(), View.OnClickListener, SeekBar.OnSeek
         updateProgress(progress)
         // 定时获取进度
 
-        handle.sendEmptyMessageDelayed(MSG_PROGRESS, 1000)
+//        handle.sendEmptyMessageDelayed(MSG_PROGRESS, 1000)
+        handle.sendEmptyMessage(MSG_PROGRESS)
 
         // 更新歌词播放进度
         lyricView.updateProgress(progress)

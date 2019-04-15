@@ -31,6 +31,9 @@ class LyricView : View {
     var lineHeight = 0
 
 
+    var duration = 0
+    var progress = 0
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -63,6 +66,34 @@ class LyricView : View {
      * 绘制多行居中
      */
     private fun drawMultiLine(canvas: Canvas?) {
+
+        // 求居中行的偏移量
+//        求居中行的偏移
+
+
+//        行可用时间:
+        var lineTime = 0
+        if (centerLine == list.size - 1) {
+            //        1. 最后一行居中  行可用时间 = duration - 最后一行开始时间
+            lineTime - duration - list[centerLine].startTime
+        } else {
+            //        2. 其他行居中    行可用时间 = 下一行开始时间 - 居中行开始时间
+            val centerS = list[centerLine].startTime
+            val nextS = list[centerLine + 1].startTime
+            lineTime = nextS - centerS
+
+        }
+
+        //偏移时间 = progress-居中行开始时间
+        val offsetTime = progress - list[centerLine].startTime
+
+//        偏移百分比 = 偏移时间/行可用时间
+        val offsetPercent = offsetTime/lineTime.toFloat()
+
+//        偏移y= 偏移百分比*行高
+        val offsetY = offsetPercent*lineHeight
+
+
         val centerText = list[centerLine].content
         val bounds = Rect()
 
@@ -71,7 +102,7 @@ class LyricView : View {
         val textH = bounds.height()
 
         // 居中行y
-        val centerY = viewH / 2 + textH / 2
+        val centerY = viewH / 2 + textH / 2 - offsetY
 
         for ((index, value) in list.withIndex()) {
             if (index == centerLine) {
@@ -133,10 +164,14 @@ class LyricView : View {
 
     }
 
+
     /**
      * 传递当前播放
      */
     fun updateProgress(progress: Int) {
+        this.progress = progress
+
+
         // 获取居中行的行号
 
         //先判断是否是最后一行
@@ -164,6 +199,15 @@ class LyricView : View {
         invalidate() // onDraw 方法 内容的绘制
 //        postInvalidate() // onDraw方法 可以在子线程刷新绘制
 //        requestLayout()  // 布局参数改变时候刷新
+
+    }
+
+
+    /**
+     * 设置当前 播放歌曲总时长
+     */
+    fun setMyDuration(duration: Int) {
+        this.duration = duration
 
     }
 }
