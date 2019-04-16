@@ -1,5 +1,6 @@
 package com.hand.player.net
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.hand.player.util.ThreadUtil
 import okhttp3.*
 import java.io.IOException
@@ -8,7 +9,7 @@ import java.io.IOException
  * @author  diaokaibin@gmail.com on 2019/4/6.
  */
 class NetManager private constructor() {
-    private val client by lazy { OkHttpClient.Builder().build() }
+    private val client by lazy { OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor()).build() }
 
     companion object {
         val manager by lazy { NetManager() }
@@ -34,7 +35,7 @@ class NetManager private constructor() {
 
                 ThreadUtil.runOnMainThread(Runnable {
                     //homeView.loadMore(list)
-                    req.handler.onSuccess(req.type,parseResult)
+                    req.handler.onSuccess(req.type, parseResult)
                 })
             }
         })
