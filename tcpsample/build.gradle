@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.hand.tcpsample"
+        applicationId "com.one.tcpsample"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

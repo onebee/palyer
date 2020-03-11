@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-          package="com.hand.player">
+          package="com.one.player">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -10,9 +10,9 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:name=".App"
+            android:name="com.one.player.App"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.SplashActivity"
+        <activity android:name="com.one.player.ui.activity.SplashActivity"
                   android:theme="@style/AppTheme.FullScreen"
         >
             <intent-filter>
@@ -22,15 +22,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.MainActivity"
+        <activity android:name="com.one.player.ui.activity.MainActivity"
                   android:launchMode="singleTask"
         />
-        <activity android:name=".ui.activity.SettingActivity"/>
-        <activity android:name=".ui.activity.AboutActivity"/>
-        <activity android:name=".ui.activity.VideoPlayerActivity"/>
-        <activity android:name=".ui.activity.TextureVideoPlayerActivity"/>
-        <activity android:name=".ui.activity.IjkVideoPlayerActivity"/>
-        <activity android:name=".ui.activity.JieCaoVideoPlayerActivity"
+        <activity android:name="com.one.player.ui.activity.SettingActivity"/>
+        <activity android:name="com.one.player.ui.activity.AboutActivity"/>
+        <activity android:name="com.one.player.ui.activity.VideoPlayerActivity"/>
+        <activity android:name="com.one.player.ui.activity.TextureVideoPlayerActivity"/>
+        <activity android:name="com.one.player.ui.activity.IjkVideoPlayerActivity"/>
+        <activity android:name="com.one.player.ui.activity.JieCaoVideoPlayerActivity"
                   android:configChanges="orientation|screenSize|keyboardHidden"
                   android:screenOrientation="portrait"
         >
@@ -64,8 +64,8 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ui.activity.AudioPlayerActivity"/>
-        <service android:name=".service.AudioService"/>
+        <activity android:name="com.one.player.ui.activity.AudioPlayerActivity"/>
+        <service android:name="com.one.player.service.AudioService"/>
     </application>
 
 </manifest>

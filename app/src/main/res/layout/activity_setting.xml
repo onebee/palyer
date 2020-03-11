@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/setting_fragment"
-        class="com.hand.player.ui.fragment.SettingFragment"
+        class="com.one.player.ui.fragment.SettingFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
