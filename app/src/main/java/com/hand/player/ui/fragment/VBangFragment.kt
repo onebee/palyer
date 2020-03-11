@@ -16,10 +16,7 @@ import com.hand.player.model.AudioBean
 import com.hand.player.ui.activity.AudioPlayerActivity
 import com.hand.player.util.CursorUtil
 import kotlinx.android.synthetic.main.fragment_vbang.*
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.yesButton
 
 /**
  * @author  diaokaibin@gmail.com on 2019/4/5.
@@ -92,18 +89,7 @@ class VBangFragment : BaseFragment() {
         if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {
             loadData()
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!, permission)) {
 
-                // 需要弹出
-                alert("我们只会访问音乐文件", "温馨提示") {
-                    yesButton { myRequestPermission() }
-                    noButton { }
-                }.show()
-
-            } else {
-
-                myRequestPermission()
-            }
         }
 
 

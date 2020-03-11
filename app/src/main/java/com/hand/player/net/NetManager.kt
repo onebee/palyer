@@ -30,13 +30,21 @@ class NetManager private constructor() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val result = response.body()?.string()
-                val parseResult = req.parseResult(result)
+                if (response.isSuccessful) {
+                    val result = response.body()?.string()
+                    val parseResult = req.parseResult(result)
 
-                ThreadUtil.runOnMainThread(Runnable {
-                    //homeView.loadMore(list)
-                    req.handler.onSuccess(req.type, parseResult)
-                })
+                    ThreadUtil.runOnMainThread(Runnable {
+                        //homeView.loadMore(list)
+                        req.handler.onSuccess(req.type, parseResult)
+                    })
+                } else {
+                    ThreadUtil.runOnMainThread(Runnable {
+                        //homeView.loadMore(list)
+                        req.handler.onError(req.type, "请求异常")
+                    })
+                }
+
             }
         })
 

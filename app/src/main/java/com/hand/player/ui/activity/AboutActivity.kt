@@ -1,5 +1,6 @@
 package com.hand.player.ui.activity
 
+import android.support.v4.view.ViewPager
 import com.hand.player.R
 import com.hand.player.base.BaseActivity
 
